@@ -6,6 +6,15 @@ import { assert as assertChai } from "chai";
 import allure from "@wdio/allure-reporter";
 import { Key } from "webdriverio";
 
+//Chapter 12 Colors
+let SEND_TO_ALURE = false // flag to send Errors and Warning to Allure
+const ANSI_GREEN = `\x1b[38;2;140;225;50m` // PASS
+const ANSI_RED = `\x1b[38;2;145;250;45m`    // FAIL 
+const ANSI_YELLOW = `\x1b[38;2;145;226;45m`  // WARNING
+const ANSI_PURPLE = `\x1b[38;2;250;235;80m`  // Locator
+const ANSI_WHITE = `\x1b[97m`  // TEXT entered into a fiel
+const ANSI_RESET = `\x1b[0m` //Reset
+
 export async function clickAdv(element: WebdriverIO.Element) {
   let success: boolean = false;
 
@@ -162,13 +171,13 @@ export function getToday(offset: number = 0, format: string = "MM-dd-yyyy") {
     month: format.includes("MM")
       ? "2-digit"
       : format.includes("M")
-      ? "numeric"
-      : undefined,
+        ? "numeric"
+        : undefined,
     day: format.includes("dd")
       ? "2-digit"
       : format.includes("d")
-      ? "numeric"
-      : undefined,
+        ? "numeric"
+        : undefined,
   });
 }
 
@@ -253,16 +262,55 @@ async function isExists(element: WebdriverIO.Element) {
  * Console.log wrapper
  *    - Does not print if string is empty / null
  *    - Prints trace if not passed string or number
+ *    Chapter 12: Cub Reporter and Star Columnist
+ *    - Outputs in Green with PASS: 
+ *    - Outputs in Red with FAIL: error: or Promise 
+ *    - Outputs in Yellow with WARN: or [object Promise]
  * @param message
  */
 export async function log(message: any): Promise<void> {
   try {
-    if (typeof message === "string" || typeof message === "number") {
-      if (message) {
-        console.log(`---> ${message}`);
-        if (message.toString().includes(`[object Promise]`)) {
-          console.log(`    Possiblly missing await statement`);
+    
+    let strMessage = message
+
+    if (typeof message === "number") {
+      strMessage = message.toString;
+    }
+
+    if (typeof strMessage === "string") {
+      if (strMessage) {
+
+        //Chapter 12: Colors for Logging and Allure
+        if (strMessage.includes("PASS:")) {
+          strMessage = ANSI_GREEN + strMessage + ANSI_RESET
+          SEND_TO_ALURE = true
+        }
+
+        if (strMessage.includes("WARN:")) {
+          strMessage = ANSI_YELLOW + strMessage + ANSI_RESET
+          SEND_TO_ALURE = true
+        }
+
+        if (strMessage.includes("FAIL:")) {
+          strMessage = ANSI_RED + strMessage + ANSI_RESET
+          SEND_TO_ALURE = true
+        }
+
+        if (strMessage.includes("Error: ") || (strMessage.includes("Promise"))) {
+          strMessage = ANSI_RED + strMessage + ANSI_RESET
+          SEND_TO_ALURE = true
+        }
+
+        console.log(`---> ${strMessage}`);
+
+        if (SEND_TO_ALURE){
+          addStep(message); //No color
+        }
+
+        if (strMessage.toString().includes(`[object Promise]`)) {
+          console.log(ANSI_YELLOW + `    Possibly missing await statement`+ ANSI_RESET);
           console.trace();
+          SEND_TO_ALURE = true
         }
       }
     }
@@ -398,8 +446,7 @@ export async function pageSync(
 
     if (duration > timeout) {
       await log(
-        `  WARN: pageSync() completed in ${
-          duration / 1000
+        `  WARN: pageSync() completed in ${duration / 1000
         } sec  (${duration} ms) `
       );
     } else {
@@ -454,7 +501,7 @@ function replaceTags(text: string) {
         if (match) {
           const days = parseInt(match[0]);
         }
-        
+
         newText = newText.replace(tag, getToday(days, format));
         break;
 
@@ -490,7 +537,7 @@ export async function selectAdv(
   list: WebdriverIO.Element,
   text: string
 ) {
-  let listItem : WebdriverIO.Element
+  let listItem: WebdriverIO.Element
   let success: boolean = false;
 
   list = await getValidElement(list, "list");
@@ -524,9 +571,9 @@ export async function selectAdv(
       await list.addValue(letter);
     }
 
-   listItem = await getValidElement(list, "ListItem");
-  
-    success  = true;
+    listItem = await getValidElement(list, "ListItem");
+
+    success = true;
   } catch (error: any) {
     await log(
       `  ERROR: ${SELECTOR} list did not contain '${text}'.\n       ${error.message}`
