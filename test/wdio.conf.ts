@@ -1,31 +1,6 @@
-<<<<<<< Updated upstream:test/wdio.conf.ts
-=======
 import type { Options } from '@wdio/types';
-//import { browser, $, $$, expect } from '@wdio/globals';
-import {ASB} from './helpers/globalObjects';
->>>>>>> Stashed changes:wdio.conf.ts
+import {ASB} from '../helpers/globalObjects';
 
-import type { Options } from '@wdio/types'
-// Chapter 4 - Automation SwitchBoard 
-function switchboardFactory () {
-    
-    const switchboard = new Map
-
-    //Set 
-    switchboard.set ("DEBUG", (process.env.DEBUG === undefined) ? true : (process.env.DEBUG === `true`))    
-    
-    return {
-        get(k:string) {
-            return switchboard.get(k)
-        },
-
-        set(k:string, v:any) {
-             switchboard.set(k,v)
-        }
-    }
-}
-
-const ASB = switchboardFactory()
 console.log(`DEBUG: ${ASB.get("DEBUG")}`)
 
 ASB.set("timeout", (ASB.get("DEBUG") === true) ? 1_000_000 : 10_000)
@@ -330,13 +305,6 @@ export const config: Options.Testrunner = {
      * @param {Boolean} result.passed    true if test has passed, otherwise false
      * @param {Object}  result.retries   informations to spec related retries, e.g. `{ attempts: 0, limit: 0 }`
      */
-<<<<<<< Updated upstream:test/wdio.conf.ts
-    afterTest: async function (test, context, { error, result, duration, passed, retries })
-    {
-        if (!passed)
-        {
-            await browser.takeScreenshot();
-=======
     afterTest: async function (
         test,
         context,
@@ -344,7 +312,6 @@ export const config: Options.Testrunner = {
     ) {
         if (!passed) {
             await browser.saveScreenshot
->>>>>>> Stashed changes:wdio.conf.ts
         }
     },
 
@@ -403,9 +370,7 @@ export const config: Options.Testrunner = {
 /**
  * log wrapper
  * @param text to be output to the console window 
- */
- const logASB = switchboardFactory()
- 
+ */ 
  
 global.log = async (text: any) =>
 {
