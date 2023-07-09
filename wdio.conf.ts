@@ -1,5 +1,5 @@
 import type { Options } from '@wdio/types';
-import {ASB} from '../helpers/globalObjects';
+import {ASB} from './helpers/globalObjects';
 
 console.log(`DEBUG: ${ASB.get("DEBUG")}`)
 
