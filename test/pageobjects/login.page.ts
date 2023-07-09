@@ -1,13 +1,5 @@
-<<<<<<< Updated upstream
-import { ChainablePromiseElement } from 'webdriverio';
-
-import Page from './page';
-=======
-// import { ChainablePromiseElement } from "webdriverio";
-//import {browser, $} from '@wdio/globals';
 import * as helpers from "../../helpers/helpers";
 import Page from "./page";
->>>>>>> Stashed changes
 
 /**
  * sub page containing specific selectors and methods for a specific page

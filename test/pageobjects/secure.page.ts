@@ -1,10 +1,3 @@
-<<<<<<< Updated upstream
-import { ChainablePromiseElement } from 'webdriverio';
-
-=======
-// import { ChainablePromiseElement } from 'webdriverio';
-//import {browser, $} from '@wdio/globals';
->>>>>>> Stashed changes
 import Page from './page';
 
 /**
