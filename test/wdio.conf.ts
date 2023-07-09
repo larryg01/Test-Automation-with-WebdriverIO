@@ -1,3 +1,9 @@
+<<<<<<< Updated upstream:test/wdio.conf.ts
+=======
+import type { Options } from '@wdio/types';
+//import { browser, $, $$, expect } from '@wdio/globals';
+import {ASB} from './helpers/globalObjects';
+>>>>>>> Stashed changes:wdio.conf.ts
 
 import type { Options } from '@wdio/types'
 // Chapter 4 - Automation SwitchBoard 
@@ -324,11 +330,21 @@ export const config: Options.Testrunner = {
      * @param {Boolean} result.passed    true if test has passed, otherwise false
      * @param {Object}  result.retries   informations to spec related retries, e.g. `{ attempts: 0, limit: 0 }`
      */
+<<<<<<< Updated upstream:test/wdio.conf.ts
     afterTest: async function (test, context, { error, result, duration, passed, retries })
     {
         if (!passed)
         {
             await browser.takeScreenshot();
+=======
+    afterTest: async function (
+        test,
+        context,
+        { error, result, duration, passed, retries }
+    ) {
+        if (!passed) {
+            await browser.saveScreenshot
+>>>>>>> Stashed changes:wdio.conf.ts
         }
     },
 
