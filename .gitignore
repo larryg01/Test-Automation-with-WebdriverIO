@@ -5,4 +5,8 @@ all-logs
 driver-logs
 *.png
 .DS_Store
+screenshots
+*.log
+.vscode
+.idea
 yarn.lock

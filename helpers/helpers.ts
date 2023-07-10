@@ -156,8 +156,8 @@ export async function sleep(ms: number) {
 }
 
 export async function clickAdv(
-    element: WebdriverIO.Element
-) {
+  element: WebdriverIO.Element): Promise<Boolean>
+ {
   let success: boolean = false;
 
   element = await getValidElement(element);
@@ -171,6 +171,7 @@ export async function clickAdv(
       await scrollIntoView(element);
       await waitForElementToStopMoving(element, waitforTimeout);
     }
+    
     await highlightOn(element);
     //@ts-ignore 
     await element.click({block: "center"});
