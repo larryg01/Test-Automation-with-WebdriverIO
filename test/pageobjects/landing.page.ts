@@ -21,7 +21,7 @@ class LandingPage extends Page {
    * e.g. to login using username and password
    */
   public async navToTypos() {
-    await helpers.clickAdv (this.btnTypos);
+    await helpers.clickAdv (await this.btnTypos);
    }
 
   /**
