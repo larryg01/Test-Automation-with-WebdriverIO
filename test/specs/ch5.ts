@@ -8,7 +8,6 @@ import { expect as expectWebdriverIO } from 'expect-webdriverio';
 
 describe("Chapter 5: Fail Last clickAdv with pageSync and autoscrolln", async () => {
 
-
   fit("Chapter 5: Fail Last clickAdv with pageSync and autoscroll", async () => {
     // await helpers.log(Promise) // Unit test log returns warning when anything but string is passsed
     await LoginPage.open();
