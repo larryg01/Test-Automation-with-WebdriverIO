@@ -253,25 +253,26 @@ export const config: Options.Testrunner = {
      * @param {args} arguments passed to the command
      */
     beforeCommand: function (commandName, args) {
-        if (commandName === '$') {
-          const selector = args[0];
-          // Modify the selector or add additional functionality as needed
-          // For example, you can add a prefix to the selector
-          global.log (`BEFORE $ COMMAND: Selector ${selector} sent to ABS(elementSelector)`);
-          // Pass the locator to the switchboard
-          ASB.set("elementSelector", selector)
-        }
+        // Chapter 5 - Keep the current object locator for future manipulation
+        let element = args[0];
 
-        if (commandName === '$$') {
-            const selector = args[0];
-            // Modify the selector or add additional functionality as needed
-            // For example, you can add a prefix to the selector
-            global.log (`BEFORE $$ COMMAND: Selector ${selector} sent to ABS(elementsSelector)`);
-            // Pass the locator to the switchboard
-            ASB.set("elementsSelector", selector)
+        switch (commandName) {
+            case '$':
+            case '$$':
+            case 'findElement':
+            case 'findElements':
+              // Pass the locator to the Automation Switchboard             
+              global.log (`BEFORE ${commandName}: Selector ${element.selector} sent to ASB(selector)`);
+              ASB.set("selector", element.selector)
+              break;
+          
+            default:
+              // Handle default case here if needed
+              break;
           }
-
       },
+
+
 
     /**
      * Gets executed before test execution begins. At this point you can access to all global
